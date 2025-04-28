@@ -1,64 +1,18 @@
 /**
- * Moduł odpowiedzialny za obsługę galerii zdjęć
- */
-const GalleryHandler = (() => {
-    /**
-     * Inicjalizuje galerie zdjęć
-     */
-    const initGalleries = () => {
-        Fancybox.bind("[data-fancybox]", {
-            Carousel: {
-                infinite: false,
-            },
-            Thumbs: {
-                autoStart: true,
-            },
-            Images: {
-                zoom: true,
-            },
-            Toolbar: {
-                display: [
-                    { id: "prev", position: "center" },
-                    { id: "counter", position: "center" },
-                    { id: "next", position: "center" },
-                    "zoom",
-                    "slideshow",
-                    "fullscreen",
-                    "close",
-                ],
-            },
-        });
-    };
-
-    /**
-     * Inicjalizuje moduł
-     */
-    const init = () => {
-        document.addEventListener('DOMContentLoaded', initGalleries);
-        document.addEventListener('tripLoaded', initGalleries);
-    };
-
-    return {
-        init
-    };
-})();
-
-/**
  * Tworzy galerię zdjęć dla danego ID sekcji
  * @param {string} sectionId - Identyfikator sekcji
- * @param {string} type - Typ sekcji (domyślnie "section")
  * @param {number} maxImages - Maksymalna liczba zdjęć (domyślnie 10)
  * @param {function} getCaption - Funkcja do generowania podpisu zdjęcia
  * @returns {HTMLElement} Element galerii
  */
-const createGallery = (sectionId, type = 'section', maxImages = 10, getCaption = (i) => `Zdjęcie ${i}`) => {
+const createGallery = (sectionId, maxImages = 10, getCaption = (i) => `Zdjęcie ${i}`) => {
     const gallery = document.createElement('div');
     gallery.className = 'section-gallery';
 
     const baseUrl = `trips/${currentTrip}/images/${sectionId}`;
 
     for (let i = 1; i <= maxImages; i++) {
-        const imageUrl = `${baseUrl}-${i}.jpg`;
+        const imageUrl = `${baseUrl}_${i}.jpg`; // Poprawione: dodanie _ przed numerem
 
         fetch(imageUrl)
             .then(response => {
