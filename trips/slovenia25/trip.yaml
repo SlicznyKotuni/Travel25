@@ -1,0 +1,16 @@
+title: "Słowenia 2025"
+description: "Mój cybernetyczny przewodnik po Słowenii"
+defaultMapCenter: [46.1512, 14.9955]
+defaultZoom: 8
+
+sections:
+  - id: ptuj
+    title: "Ptuj"
+    description: "Najstarsze miasto w Słowenii z bogatą historią."
+    location: [46.4199, 15.8699]
+    images: ["ptuj_1.jpg", "ptuj_2.jpg"]
+    subsections:
+      - id: ptuj-castle
+        title: "Zamek Ptuj"
+        description: "Średniowieczny zamek z panoramicznym widokiem."
+        images: ["ptuj_castle_1.jpg", "ptuj_castle_2.jpg"]

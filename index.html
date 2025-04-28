@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Travel Planner</title>
+    
+    <!-- Fonty -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Biblioteki CSS -->
+    <link rel="stylesheet" href="libs/leaflet.css">
+    <link rel="stylesheet" href="libs/fancybox.css">
+    
+    <!-- Własne style -->
+    <link rel="stylesheet" href="css/cyber-theme.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="cyber-header">
+        <div class="logo">CYBER<span class="neon-text">TRAVEL</span></div>
+        <nav id="trip-selector">
+            <ul class="cyber-nav">
+                <li><a href="#" class="active neon-border" data-trip="slovenia">Słowenia</a></li>
+                <li><a href="#" data-trip="croatia">Chorwacja</a></li>
+                <li><button id="toggle-theme" class="cyber-button small">Zmień motyw</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="cyber-section">
+            <h1 id="trip-title" class="glitch-text">Słowenia 2025</h1>
+            <p id="trip-description" class="cyber-text">Mój cybernetyczny przewodnik po Słowenii</p>
+        </section>
+
+        <nav id="section-navigation" class="cyber-section">
+            <ul class="cyber-nav horizontal" id="sections-list">
+                <!-- Dynamicznie generowane linki do sekcji -->
+            </ul>
+        </nav>
+
+        <section id="content-container" class="cyber-section">
+            <!-- Tutaj będą dynamicznie ładowane sekcje z trip.yaml -->
+        </section>
+
+        <section id="map-section" class="cyber-section">
+            <h2 class="neon-text">Mapa podróży</h2>
+            <div id="map-container"></div>
+        </section>
+
+        <section id="planner-section" class="cyber-section">
+            <h2 class="neon-text">Organizer podróży</h2>
+            
+            <div class="planner-container">
+                <div class="planner-general">
+                    <h3 class="cyber-subtitle">Plan ogólny</h3>
+                    <div class="calendar-container" id="general-calendar">
+                        <!-- Tutaj będzie kalendarz ogólny -->
+                    </div>
+                </div>
+                
+                <div class="planner-detailed">
+                    <h3 class="cyber-subtitle">Plan szczegółowy</h3>
+                    <div class="day-container" id="detailed-day-plan">
+                        <!-- Tutaj będzie szczegółowy plan dnia -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="cyber-footer">
+        <p>Cyber Travel Planner &copy; 2025</p>
+    </footer>
+
+    <!-- Biblioteki JS -->
+    <script src="libs/leaflet.js"></script>
+    <script src="libs/js-yaml.min.js"></script>
+    <script src="libs/fancybox.umd.js"></script>
+    <script src="libs/Sortable.min.js"></script>
+    <script src="libs/alpine.min.js" defer></script>
+    
+    <!-- Własne skrypty JS -->
+    <script src="js/content-loader.js"></script>
+    <script src="js/gallery.js"></script>
+    <script src="js/map-handler.js"></script>
+    <script src="js/planner.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

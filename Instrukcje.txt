@@ -1,0 +1,73 @@
+Plan strony przewodnika wakacyjnego w stylu cybernetycznym
+Świetny pomysł! Stworzenie interaktywnego przewodnika wakacyjnego w stylu cybernetycznym z możliwością wielokrotnego użycia to doskonałe rozwiązanie. Mogę zaproponować kompletny plan i strukturę takiej aplikacji.
+
+Struktura aplikacji
+
+/
+├── index.html                # Główna strona
+├── css/
+│   ├── style.css             # Główne style
+│   └── cyber-theme.css       # Style cybernetyczne z neonami
+├── js/
+│   ├── main.js               # Główna logika aplikacji
+│   ├── content-loader.js     # Ładowanie treści z YAML
+│   ├── gallery.js            # Obsługa galerii
+│   ├── map-handler.js        # Obsługa mapy
+│   └── planner.js            # Organizer/kalendarz
+├── trips/                    # Katalog z wycieczkami
+│   ├── slovenia/             # Wycieczka do Słowenii
+│   │   ├── trip.yaml         # Dane o wycieczce
+│   │   └── images/           # Zdjęcia ponazywane jak sekcje
+│   └── croatia/              # Inna wycieczka (w przyszłości)
+│       ├── trip.yaml
+│       └── images/
+└── libs/                     # Zewnętrzne biblioteki
+Przykładowa struktura pliku YAML
+
+title: "Słowenia 2025"
+description: "Mój cybernetyczny przewodnik po Słowenii"
+defaultMapCenter: [46.1512, 14.9955]
+defaultZoom: 8
+
+sections:
+  - id: ptuj
+    title: "Ptuj"
+    description: "Najstarsze miasto w Słowenii z bogatą historią."
+    location: [46.4199, 15.8699]
+    images: ["ptuj_1.jpg", "ptuj_2.jpg"]
+    subsections:
+      - id: ptuj-castle
+        title: "Zamek Ptuj"
+        description: "Średniowieczny zamek z panoramicznym widokiem."
+        images: ["ptuj_castle_1.jpg", "ptuj_castle_2.jpg"]
+      - id: ptuj-monastery
+        title: "Klasztory"
+        description: "Zabytkowe klasztory z unikalnymi eksponatami."
+        images: ["ptuj_monastery.jpg"]
+Technologie i biblioteki
+HTML5, CSS3, JavaScript (ES6+) jako podstawa
+Leaflet.js do interaktywnej mapy
+js-yaml do parsowania plików YAML
+Lightbox2 lub Fancybox do galerii zdjęć z powiększaniem
+SortableJS do funkcji przeciągania elementów w organizerze
+Alpine.js do reaktywnych elementów interfejsu
+Plan implementacji
+Stworzymy najpierw statyczny szkielet strony z cybernetycznym designem
+Zaimplementujemy dynamiczne ładowanie treści z plików YAML
+Dodamy interaktywną mapę z oznaczeniami miejsc
+Stworzymy system galerii zdjęć z możliwością powiększania
+Zaimplementujemy organizer z funkcją drag-and-drop
+Dodamy możliwość przełączania między różnymi wycieczkami
+
+Pobierz następujące biblioteki i umieść je w katalogu libs/:
+
+Leaflet.js - dla map: https://leafletjs.com/download.html
+Umieść leaflet.js i leaflet.css w katalogu libs
+js-yaml - dla parsowania YAML: https://github.com/nodeca/js-yaml
+Pobierz js-yaml.min.js
+Fancybox - do galerii: https://fancyapps.com/fancybox/
+Pobierz pliki CSS i JS
+SortableJS - do funkcji drag-and-drop: https://github.com/SortableJS/Sortable
+Pobierz Sortable.min.js
+Alpine.js - do reaktywnych elementów: https://alpinejs.dev/
+Pobierz alpine.min.js
