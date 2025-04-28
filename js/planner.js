@@ -16,7 +16,9 @@ const PlannerHandler = (() => {
      */
     const initDayCount = () => {
         const dayCountInput = document.getElementById('day-count-input');
-        dayCountInput.value = plannerData.numberOfDays; // Ustawienie wartości początkowej
+        if(dayCountInput) {
+            dayCountInput.value = plannerData.numberOfDays; // Ustawienie wartości początkowej
+        }
         plannerData.days = Array.from({ length: plannerData.numberOfDays }, (_, i) => i + 1);
     };
     
@@ -59,6 +61,7 @@ const PlannerHandler = (() => {
      */
     const initGeneralCalendar = (data) => {
         const calendarContainer = document.getElementById('general-calendar');
+        if (!calendarContainer) return;
         calendarContainer.innerHTML = '';
     
         // Nagłówek kalendarza
@@ -244,9 +247,13 @@ const PlannerHandler = (() => {
      */
     const loadDayAssignments = (data) => {
         const assignedSections = document.getElementById('day-assigned-sections');
+         if (!assignedSections) return;
         assignedSections.innerHTML = '';
         
-        document.getElementById('assigned-sections-title').textContent = `Atrakcje na dzień ${plannerData.selectedDay ? plannerData.selectedDay : '...'}`;
+        const assignedSectionsTitle = document.getElementById('assigned-sections-title');
+         if(assignedSectionsTitle) {
+            assignedSectionsTitle.textContent = `Atrakcje na dzień ${plannerData.selectedDay ? plannerData.selectedDay : '...'}`;
+         }
         
         // Jeśli istnieją przypisania dla wybranego dnia, dodaj je do kontenera
         if (plannerData.sectionAssignments[plannerData.selectedDay]) {
@@ -269,6 +276,7 @@ const PlannerHandler = (() => {
      */
     const updateDetailedDayPlan = (data) => {
         const detailedDayPlan = document.getElementById('detailed-day-plan');
+        if (!detailedDayPlan) return;
         detailedDayPlan.innerHTML = '';
     
         // Nagłówek planu szczegółowego
@@ -633,16 +641,27 @@ const PlannerHandler = (() => {
         });
     
         // Dodanie obsługi przycisków zapisu i wczytywania
-        document.getElementById('save-plan-button').addEventListener('click', savePlanToFile);
-        document.getElementById('load-plan-button').addEventListener('click', loadPlanFromFile);
-        document.getElementById('export-pdf-button').addEventListener('click', () => {
-            const tripData = document.tripData; // Pobierz dane wycieczki
-            if (tripData) {
-                exportPlanToPdf(tripData);
-            } else {
-                alert('Dane wycieczki nie zostały jeszcze załadowane.');
-            }
-        });
+        const savePlanButton = document.getElementById('save-plan-button');
+        if(savePlanButton) {
+            savePlanButton.addEventListener('click', savePlanToFile);
+        }
+        
+        const loadPlanButton = document.getElementById('load-plan-button');
+        if(loadPlanButton) {
+            loadPlanButton.addEventListener('click', loadPlanFromFile);
+        }
+        
+        const exportPdfButton = document.getElementById('export-pdf-button');
+        if(exportPdfButton) {
+            exportPdfButton.addEventListener('click', () => {
+                const tripData = document.tripData; // Pobierz dane wycieczki
+                if (tripData) {
+                    exportPlanToPdf(tripData);
+                } else {
+                    alert('Dane wycieczki nie zostały jeszcze załadowane.');
+                }
+            });
+        }
     };
     
     return {
