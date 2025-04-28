@@ -13,6 +13,9 @@
     <!-- Biblioteki CSS z CDN -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css">
+
     
     <!-- Własne style -->
     <link rel="stylesheet" href="css/cyber-theme.css">
@@ -26,6 +29,7 @@
                 <li><a href="#" class="active neon-border" data-trip="slovenia">Słowenia</a></li>
                 <li><a href="#" data-trip="croatia">Chorwacja</a></li>
                 <li><button id="toggle-theme" class="cyber-button small">Zmień motyw</button></li>
+         <button id="toggle-all-sections" class="cyber-button">Zwiń/Rozwiń wszystkie</button>
             </ul>
         </nav>
     </header>
@@ -82,7 +86,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js" defer></script>
-    
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="js/pdf-export.js"></script>
     <!-- Własne skrypty JS -->
     <script src="js/content-loader.js"></script>
     <script src="js/gallery.js"></script>

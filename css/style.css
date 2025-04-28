@@ -244,3 +244,33 @@
     border-color: var(--neon-green);
     background-color: rgba(57, 255, 20, 0.1);
 }
+/* Map improvements */
+#map-container {
+    height: 500px;
+    border: 2px solid #0ff;
+    border-radius: 8px;
+}
+
+/* Planner improvements */
+.days-control {
+    margin-bottom: 15px;
+    padding: 10px;
+    background: rgba(0, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+.dragging {
+    opacity: 0.5;
+    border: 2px dashed #0ff !important;
+}
+
+/* Print styles */
+@media print {
+    .cyber-header, .cyber-footer, .planner-container {
+        display: none;
+    }
+    
+    .content-section {
+        break-inside: avoid;
+    }
+}

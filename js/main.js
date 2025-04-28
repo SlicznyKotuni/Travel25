@@ -33,6 +33,18 @@ const App = (() => {
     /**
      * Inicjalizuje aplikację
      */
+document.getElementById('toggle-all-sections').addEventListener('click', () => {
+    const allContents = document.querySelectorAll('.section-content, .subsection-content');
+    const isAnyVisible = Array.from(allContents).some(c => c.style.display !== 'none');
+    
+    allContents.forEach(content => {
+        content.style.display = isAnyVisible ? 'none' : 'grid';
+    });
+    
+    document.querySelectorAll('.section-toggle').forEach(btn => {
+        btn.innerHTML = isAnyVisible ? '&#43;' : '&#8722;';
+    });
+});
     const init = () => {
         document.addEventListener('DOMContentLoaded', () => {
             initThemeToggle();
