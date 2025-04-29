@@ -9,10 +9,10 @@ const createGallery = (sectionId, maxImages = 10, getCaption = (i) => `Zdjęcie 
     const gallery = document.createElement('div');
     gallery.className = 'section-gallery';
 
-    const baseUrl = `trips/${currentTrip}/images/${sectionId}`;
+    const baseUrl = `trips/${ContentLoader.getCurrentTripId()}/images/${sectionId}`;
 
     for (let i = 1; i <= maxImages; i++) {
-        const imageUrl = `${baseUrl}_${i}.jpg`; // Poprawione: dodanie _ przed numerem
+        const imageUrl = `${baseUrl}_${i}.jpg`;
 
         fetch(imageUrl)
             .then(response => {
@@ -31,6 +31,12 @@ const createGallery = (sectionId, maxImages = 10, getCaption = (i) => `Zdjęcie 
 
                 galleryItem.appendChild(img);
                 gallery.appendChild(galleryItem);
+                
+                // Inicjalizacja Fancybox po dodaniu nowego zdjęcia
+                Fancybox.bind(`[data-fancybox="gallery-${sectionId}"]`, {
+                    Thumbs: false,
+                    Toolbar: true
+                });
             })
             .catch(error => {
                 console.warn(`Błąd ładowania zdjęcia: ${imageUrl}`, error);

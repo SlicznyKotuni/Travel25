@@ -1,6 +1,34 @@
 /**
  * Moduł odpowiedzialny za ładowanie treści z plików YAML i budowanie interfejsu
  */
+const createGallery = (images, sectionId, type = 'section') => {
+    const gallery = document.createElement('div');
+    gallery.className = 'section-gallery';
+    
+    images.forEach((image, index) => {
+        const galleryItem = document.createElement('a');
+        galleryItem.className = 'gallery-item';
+        galleryItem.href = `trips/${currentTrip}/images/${image}`;
+        galleryItem.setAttribute('data-fancybox', `gallery-${sectionId}`);
+        galleryItem.setAttribute('data-caption', `Zdjęcie ${index + 1}`);
+        
+        const img = document.createElement('img');
+        img.src = `trips/${currentTrip}/images/${image}`;
+        img.alt = `${sectionId} - zdjęcie ${index + 1}`;
+        img.loading = 'lazy';
+        
+        galleryItem.appendChild(img);
+        gallery.appendChild(galleryItem);
+    });
+    
+    // Inicjalizacja Fancybox dla całej galerii
+    Fancybox.bind(`[data-fancybox="gallery-${sectionId}"]`, {
+        Thumbs: false,
+        Toolbar: true
+    });
+    
+    return gallery;
+};
 const ContentLoader = (() => {
     // Przechowuje aktualnie załadowaną wycieczkę
     let currentTrip = 'slovenia';
