@@ -1,68 +1,78 @@
 /**
- * Główny moduł aplikacji
+ * Główny plik JavaScript aplikacji Travel25
+ * Inicjalizuje wszystkie moduły i zarządza ich współdziałaniem
  */
-const App = (() => {
-    /**
-     * Inicjalizuje przełącznik motywu
-     */
-    const initThemeToggle = () => {
-        const toggleButton = document.getElementById('toggle-theme');
-        if (toggleButton) {
-            toggleButton.addEventListener('click', () => {
-                document.body.classList.toggle('light-theme');
-                
-                // Zapisanie preferencji motywu w localStorage
-                const isDarkTheme = !document.body.classList.contains('light-theme');
-                localStorage.setItem('darkTheme', isDarkTheme);
-                
-                // Aktualizacja tekstu przycisku
-                toggleButton.textContent = isDarkTheme ? 'Jasny motyw' : 'Ciemny motyw';
-            });
-            
-            // Sprawdzenie zapisanego motywu przy ładowaniu
-            const savedDarkTheme = localStorage.getItem('darkTheme');
-            if (savedDarkTheme === 'false') {
-                document.body.classList.add('light-theme');
-                toggleButton.textContent = 'Ciemny motyw';
-            } else {
-                toggleButton.textContent = 'Jasny motyw';
-            }
-        }
-    };
 
-    /**
-     * Inicjalizuje aplikację
-     */
-document.getElementById('toggle-all-sections').addEventListener('click', () => {
-    const allContents = document.querySelectorAll('.section-content, .subsection-content');
-    const isAnyVisible = Array.from(allContents).some(c => c.style.display !== 'none');
-    
-    allContents.forEach(content => {
-        content.style.display = isAnyVisible ? 'none' : 'grid';
+// Poczekaj na załadowanie DOM
+document.addEventListener('DOMContentLoaded', () => {
+    // Inicjalizacja podstawowych modułów
+    ContentLoader.init();
+    MapHandler.init();
+    Planner.init();
+    PDFExport.init();
+
+    // Inicjalizacja Fancybox dla galerii zdjęć
+    Fancybox.bind("[data-fancybox]", {
+        Thumbs: {
+            type: "classic",
+        },
+        Toolbar: {
+            display: {
+                left: [],
+                middle: [],
+                right: ["close"],
+            },
+        },
     });
-    
-    document.querySelectorAll('.section-toggle').forEach(btn => {
-        btn.innerHTML = isAnyVisible ? '&#43;' : '&#8722;';
-    });
-});
-    const init = () => {
-        document.addEventListener('DOMContentLoaded', () => {
-            initThemeToggle();
-            
-            // Inicjalizacja wszystkich modułów
-            ContentLoader.init();
-            GalleryHandler.init();
-            MapHandler.init();
-            PlannerHandler.init();
-            
-            console.log('Aplikacja została zainicjowana pomyślnie!');
+
+    // Obsługa przycisku zamykania/otwierania sekcji
+    document.getElementById('toggle-all-sections').addEventListener('click', () => {
+        const sections = document.querySelectorAll('.section-content, .subsection-content');
+        const isAnyHidden = [...sections].some(s => s.style.display === 'none');
+        
+        sections.forEach(section => {
+            section.style.display = isAnyHidden ? 'grid' : 'none';
         });
-    };
 
-    return {
-        init
-    };
-})();
+        // Aktualizacja przycisków toggle
+        document.querySelectorAll('.section-toggle').forEach(btn => {
+            btn.innerHTML = isAnyHidden ? '&#8722;' : '&#43;';
+        });
+    });
 
-// Inicjalizacja aplikacji
-App.init();
+    // Obsługa zmiany motywu
+    document.getElementById('toggle-theme').addEventListener('click', () => {
+        document.body.classList.toggle('light-theme');
+        localStorage.setItem('theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+    });
+
+    // Przywróć zapisany motyw
+    if (localStorage.getItem('theme') === 'light') {
+        document.body.classList.add('light-theme');
+    }
+
+    // Nasłuchuj zdarzenia załadowania nowej wycieczki
+    document.addEventListener('tripLoaded', (e) => {
+        const tripData = e.detail.data;
+        
+        // Aktualizacja mapy
+        MapHandler.updateMap(tripData.sections);
+        
+        // Inicjalizacja Fancybox po załadowaniu nowych zdjęć
+        setTimeout(() => {
+            Fancybox.destroy();
+            Fancybox.bind("[data-fancybox]", {
+                Thumbs: false,
+                Toolbar: true
+            });
+        }, 500);
+    });
+
+    // Debugowanie - logowanie zdarzeń
+    console.log('Aplikacja została poprawnie zainicjalizowana');
+});
+
+// Obsługa błędów
+window.addEventListener('error', (e) => {
+    console.error('Globalny błąd:', e.error);
+});

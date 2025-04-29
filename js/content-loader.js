@@ -6,25 +6,30 @@ const createGallery = (images, sectionId, type = 'section') => {
     gallery.className = 'section-gallery';
     
     images.forEach((image, index) => {
-        const galleryItem = document.createElement('a');
-        galleryItem.className = 'gallery-item';
-        galleryItem.href = `trips/${currentTrip}/images/${image}`;
-        galleryItem.setAttribute('data-fancybox', `gallery-${sectionId}`);
-        galleryItem.setAttribute('data-caption', `Zdjęcie ${index + 1}`);
+        const imgUrl = `trips/${currentTrip}/images/${image}`;
+        const img = new Image();
         
-        const img = document.createElement('img');
-        img.src = `trips/${currentTrip}/images/${image}`;
-        img.alt = `${sectionId} - zdjęcie ${index + 1}`;
-        img.loading = 'lazy';
+        img.onload = () => {
+            const galleryItem = document.createElement('a');
+            galleryItem.className = 'gallery-item';
+            galleryItem.href = imgUrl;
+            galleryItem.setAttribute('data-fancybox', `gallery-${sectionId}`);
+            galleryItem.setAttribute('data-caption', `Zdjęcie ${index + 1}`);
+            
+            const imgElement = document.createElement('img');
+            imgElement.src = imgUrl;
+            imgElement.alt = `${sectionId} - zdjęcie ${index + 1}`;
+            imgElement.loading = 'lazy';
+            
+            galleryItem.appendChild(imgElement);
+            gallery.appendChild(galleryItem);
+        };
         
-        galleryItem.appendChild(img);
-        gallery.appendChild(galleryItem);
-    });
-    
-    // Inicjalizacja Fancybox dla całej galerii
-    Fancybox.bind(`[data-fancybox="gallery-${sectionId}"]`, {
-        Thumbs: false,
-        Toolbar: true
+        img.onerror = () => {
+            console.warn(`Nie można załadować zdjęcia: ${imgUrl}`);
+        };
+        
+        img.src = imgUrl;
     });
     
     return gallery;
