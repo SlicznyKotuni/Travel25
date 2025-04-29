@@ -1,73 +1,67 @@
-Plan strony przewodnika wakacyjnego w stylu cybernetycznym
-Świetny pomysł! Stworzenie interaktywnego przewodnika wakacyjnego w stylu cybernetycznym z możliwością wielokrotnego użycia to doskonałe rozwiązanie. Mogę zaproponować kompletny plan i strukturę takiej aplikacji.
+Zrobimy stronę internetową o podróżowaniu. Wyjaśnię teraz logikę strony:
 
-Struktura aplikacji
+Strona będzie na github pages. Może być tylko statyczna, więc użyjemy js
+Strona główna pozwala na:
+Ma pasek nawigacji z wycieczakmi w opraciu o nazwy wycieczek z:
+/trips/nazwa_wycieczki/trip.yaml
+(oczywiście nazwy wycieczek mogą być różne i należy je ustawiać w opariuc o title w  trip.yaml
+Przycisk zwijania, rozijania wszystkich sekcji
+Zapozanie się z sekcajami i podsekcjami
+Zmianę motywu strony (mam już motywy, wkleję ci jak wygląda mój css.
+Mapę 
+Zarządzanie wycieczką.- Planer wycieczki
 
-/
-├── index.html                # Główna strona
-├── css/
-│   ├── style.css             # Główne style
-│   └── cyber-theme.css       # Style cybernetyczne z neonami
-├── js/
-│   ├── main.js               # Główna logika aplikacji
-│   ├── content-loader.js     # Ładowanie treści z YAML
-│   ├── gallery.js            # Obsługa galerii
-│   ├── map-handler.js        # Obsługa mapy
-│   └── planner.js            # Organizer/kalendarz
-├── trips/                    # Katalog z wycieczkami
-│   ├── slovenia/             # Wycieczka do Słowenii
-│   │   ├── trip.yaml         # Dane o wycieczce
-│   │   └── images/           # Zdjęcia ponazywane jak sekcje
-│   └── croatia/              # Inna wycieczka (w przyszłości)
-│       ├── trip.yaml
-│       └── images/
-└── libs/                     # Zewnętrzne biblioteki
-Przykładowa struktura pliku YAML
 
-title: "Słowenia 2025"
-description: "Mój cybernetyczny przewodnik po Słowenii"
+plik wycieczki trip.yaml jest unikatowy dla każdej wycieczki, jest on zapisywany w: 
+/trips/nazwa_wycieczki/trip.yaml
+
+Zawiera on dane niezbędne do budowy strony. 
+
+
+trip.yaml
+
+Budowa tego pliku ma być taka jak tu, oczywiście może mieć więcej sekcji i podsekcji:
+
+title: "Nazwa_wycieczki"
+description: "Krótki opis miejsca"
 defaultMapCenter: [46.1512, 14.9955]
 defaultZoom: 8
 
 sections:
   - id: ptuj
     title: "Ptuj"
-    description: "Najstarsze miasto w Słowenii z bogatą historią."
+    description: "Bardzo długi opis miejsca"
     location: [46.4199, 15.8699]
-    images: ["ptuj_1.jpg", "ptuj_2.jpg"]
     subsections:
       - id: ptuj-castle
         title: "Zamek Ptuj"
         description: "Średniowieczny zamek z panoramicznym widokiem."
-        images: ["ptuj_castle_1.jpg", "ptuj_castle_2.jpg"]
-      - id: ptuj-monastery
-        title: "Klasztory"
-        description: "Zabytkowe klasztory z unikalnymi eksponatami."
-        images: ["ptuj_monastery.jpg"]
-Technologie i biblioteki
-HTML5, CSS3, JavaScript (ES6+) jako podstawa
-Leaflet.js do interaktywnej mapy
-js-yaml do parsowania plików YAML
-Lightbox2 lub Fancybox do galerii zdjęć z powiększaniem
-SortableJS do funkcji przeciągania elementów w organizerze
-Alpine.js do reaktywnych elementów interfejsu
-Plan implementacji
-Stworzymy najpierw statyczny szkielet strony z cybernetycznym designem
-Zaimplementujemy dynamiczne ładowanie treści z plików YAML
-Dodamy interaktywną mapę z oznaczeniami miejsc
-Stworzymy system galerii zdjęć z możliwością powiększania
-Zaimplementujemy organizer z funkcją drag-and-drop
-Dodamy możliwość przełączania między różnymi wycieczkami
+       
 
-Pobierz następujące biblioteki i umieść je w katalogu libs/:
+galeria
 
-Leaflet.js - dla map: https://leafletjs.com/download.html
-Umieść leaflet.js i leaflet.css w katalogu libs
-js-yaml - dla parsowania YAML: https://github.com/nodeca/js-yaml
-Pobierz js-yaml.min.js
-Fancybox - do galerii: https://fancyapps.com/fancybox/
-Pobierz pliki CSS i JS
-SortableJS - do funkcji drag-and-drop: https://github.com/SortableJS/Sortable
-Pobierz Sortable.min.js
-Alpine.js - do reaktywnych elementów: https://alpinejs.dev/
-Pobierz alpine.min.js
+Zdjęcia do galeri są przechoywane w katalogu wycieczki typowym dla właściwej wycieczki
+/trips/nazwa_wycieczki/
+zdjęcia będą miay nazwy pasujące do id sekcji i podsekcji
+Przy każdej sekcji i podsekcji mająbyć one wyświetlane
+Przykładowe nazyw plików:
+ptuj_1.jpg
+ptuj-castle_1.jpg
+Zdjęcia mają być rozpoznane i dodane na stronę automatycznie. MA być możliwość kliknięcia zdjęcia i oglądania jak w normalnej galerii. 
+
+mapa
+
+mapa ma być poniżej atrakcji, trzeba ją ustawić zgodnie z wycieczką i lokalizacją jaka jest podana w defaultMapCenter
+Trzeba także umieścić na nniej pineski oznaczające miejsca z sekcji. 
+ 
+plan
+
+Chcę mieć mechanizm zarzązania wycieczką. Opiszę jego funkcje.
+
+Lista ogólna i lista szczegółowa
+możliwość wybrania ilości dni
+rozbicie godzinowe w liście szczegółowej
+w oparciu o nazwy sekcji, mają być elementy dostępne do umieszczania na lisćie głównej tak by dobierać atrakcję. (oczywiście możliwośćprzeciągania i upuszczania, dostępna opcja wyrzucenia obiektu z planu dnia w razei pomyłki)
+Lista szczegółowa, plan godzinowy możliwosć przeciągania atrakcji z podsekcji właściwych dla głównej sekcji przewidzianej dla danego dnia + dodatkowe obiekty (obiad, kawa, transport, inne)
+Plan pozwala na eksporotwanie dobranego planu do pliku yaml oraz import z takeigo pliku, ma mieć też możliwość zapisania jako przewodnik w formacie pdf.
+MA to tak wyglądć że na początku jest łądnie przedstawiony plan wycieczki  - lista ogólna, a potem rzut rozbicie po poszczególnych dniach, z mapami i planami szczegółowymi. Opisy celów wycieczki z naszego trip.yaml, oraz 1 zdjęcia na dzień (1 zdjęcie sekcji), pod mapą
