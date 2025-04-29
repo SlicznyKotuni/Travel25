@@ -16,7 +16,7 @@ const Gallery = (() => {
         const tripId = ContentLoader.getCurrentTripId();
         const baseUrl = `trips/${tripId}/images`;
 
-        // Tablica do przechowywania załadowanych obrazów
+        // Tablica do przechowywania znalezionych zdjęć
         const loadedImages = [];
 
         for (let i = 1; i <= maxImages; i++) {
@@ -40,6 +40,11 @@ const Gallery = (() => {
                 
                 // Dodaj do tablicy załadowanych obrazów
                 loadedImages.push(imgUrl);
+                
+                // Reinicjalizuj Fancybox po dodaniu nowych elementów
+                if (typeof Fancybox !== 'undefined') {
+                    Fancybox.bind(`[data-fancybox="gallery-${sectionId}"]`);
+                }
             };
             
             img.onerror = () => {
@@ -82,6 +87,11 @@ const Gallery = (() => {
                 
                 galleryItem.appendChild(imgElement);
                 gallery.appendChild(galleryItem);
+                
+                // Reinicjalizuj Fancybox po dodaniu nowych elementów
+                if (typeof Fancybox !== 'undefined') {
+                    Fancybox.bind(`[data-fancybox="gallery-${sectionId}"]`);
+                }
             };
             
             img.onerror = () => {
