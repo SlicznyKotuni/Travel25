@@ -4,98 +4,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cyber Travel Planner</title>
-    
-    <!-- Fonty -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
-    
-    <!-- Biblioteki CSS z CDN -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css">
-
-    
-    <!-- Własne style -->
-    <link rel="stylesheet" href="css/cyber-theme.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+    <link rel="stylesheet" href="cyber-theme.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header class="cyber-header">
-        <div class="logo">CYBER<span class="neon-text">TRAVEL</span></div>
-        <nav id="trip-selector">
-            <ul class="cyber-nav">
-                <li><a href="#" class="active neon-border" data-trip="slovenia">Słowenia</a></li>
-                <li><a href="#" data-trip="croatia">Chorwacja</a></li>
-                <li><button id="toggle-theme" class="cyber-button small">Zmień motyw</button></li>
-         <button id="toggle-all-sections" class="cyber-button">Zwiń/Rozwiń wszystkie</button>
-         <button id="save-plan-button" class="cyber-button">Zapisz plan</button>
-         <button id="load-plan-button" class="cyber-button">Wczytaj plan</button>
-         <button id="export-pdf-button" class="cyber-button">Eksport do PDF</button>
-            </ul>
+    <header>
+        <div class="logo glitch-text">Cyber Travel</div>
+        <nav id="trips-nav">
+            <!-- Dynamicznie generowane linki do wycieczek -->
         </nav>
+        <div class="controls">
+            <button id="toggle-sections" class="cyber-button small">Zwiń/Rozwiń sekcje</button>
+            <select id="theme-selector" class="cyber-select">
+                <option value="cyber">Cyber Theme</option>
+                <!-- Inne motywy -->
+            </select>
+        </div>
     </header>
 
     <main>
-        <section id="hero" class="cyber-section">
-            <h1 id="trip-title" class="glitch-text">Słowenia 2025</h1>
-            <p id="trip-description" class="cyber-text">Przewodnik po Słowenii</p>
-        </section>
+        <div id="trip-details" class="cyber-section">
+            <h1 id="trip-title" class="neon-text"></h1>
+            <p id="trip-description"></p>
+        </div>
 
-        <nav id="section-navigation" class="cyber-section">
-            <ul class="cyber-nav horizontal" id="sections-list">
-                <!-- Dynamicznie generowane linki do sekcji -->
-            </ul>
-        </nav>
+        <div id="sections-container">
+            <!-- Sekcje będą generowane dynamicznie -->
+        </div>
 
-        <section id="content-container" class="cyber-section">
-            <!-- Tutaj będą dynamicznie ładowane sekcje z trip.yaml -->
-        </section>
+        <div id="map-container" class="cyber-section">
+            <h2 class="neon-purple">Mapa wycieczki</h2>
+            <div id="map"></div>
+        </div>
 
-        <section id="map-section" class="cyber-section">
-            <h2 class="neon-text">Mapa podróży</h2>
-            <div id="map-container"></div>
-        </section>
-
-        <section id="planner-section" class="cyber-section">
-            <h2 class="neon-text">Organizer podróży</h2>
+        <div id="planner" class="cyber-section">
+            <h2 class="neon-pink">Planer wycieczki</h2>
             
-            <div class="planner-container">
-                <div class="planner-general">
-                    <h3 class="cyber-subtitle">Plan ogólny</h3>
-                    <div class="calendar-container" id="general-calendar">
-                        <!-- Tutaj będzie kalendarz ogólny -->
+            <div class="planner-controls">
+                <div class="days-selector">
+                    <label>Liczba dni:</label>
+                    <input type="number" id="days-count" min="1" max="14" value="3" class="cyber-input">
+                </div>
+                <div class="planner-buttons">
+                    <button id="export-yaml" class="cyber-button small">Eksportuj YAML</button>
+                    <button id="import-yaml" class="cyber-button small">Importuj YAML</button>
+                    <button id="export-pdf" class="cyber-button small">Eksportuj PDF</button>
+                </div>
+            </div>
+
+            <div id="planner-container">
+                <div id="attractions-list" class="planner-section">
+                    <h3 class="neon-blue">Dostępne atrakcje</h3>
+                    <div id="attractions-items" class="draggable-items">
+                        <!-- Dynamicznie generowane elementy -->
                     </div>
                 </div>
-                
-                <div class="planner-detailed">
-                    <h3 class="cyber-subtitle">Plan szczegółowy</h3>
-                    <div class="day-container" id="detailed-day-plan">
-                        <!-- Tutaj będzie szczegółowy plan dnia -->
+
+                <div id="general-plan" class="planner-section">
+                    <h3 class="neon-green">Plan ogólny</h3>
+                    <div id="days-container">
+                        <!-- Dynamicznie generowane dni -->
                     </div>
                 </div>
             </div>
-        </section>
+
+            <div id="detailed-plan" class="planner-section">
+                <h3 class="neon-purple">Plan szczegółowy</h3>
+                <div id="detailed-days-container">
+                    <!-- Dynamicznie generowane szczegóły dni -->
+                </div>
+            </div>
+        </div>
     </main>
 
-    <footer class="cyber-footer">
-        <p>ŚlicznyKotuni &copy; 2025</p>
+    <footer>
+        <p>© 2025 Cyber Travel Planner</p>
     </footer>
 
-    <!-- Biblioteki JS z CDN -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js" defer></script>
-    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="js/pdf-export.js"></script>
-     <!-- Własne skrypty JS -->
-    <script src="js/content-loader.js"></script>
+    <!-- Skrypty -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="js/tripLoader.js"></script>
     <script src="js/gallery.js"></script>
-    <script src="js/map-handler.js"></script>
+    <script src="js/map.js"></script>
     <script src="js/planner.js"></script>
     <script src="js/main.js"></script>
 </body>
