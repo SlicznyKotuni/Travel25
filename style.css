@@ -1,0 +1,297 @@
+/* style.css - Domyślne style i motyw */
+
+body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav ul {
+    padding: 0;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+nav ul li {
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: #555;
+}
+
+.theme-switcher {
+    margin-top: 10px;
+    font-size: 0.9em;
+}
+
+main {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 20px auto;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#trip-details h2, #trip-details h3, #trip-details h4 {
+    color: #333;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+    margin-top: 20px;
+}
+
+#toggle-sections {
+    display: block;
+    margin: 15px 0;
+    padding: 10px 15px;
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+#toggle-sections:hover {
+    background-color: #4cae4c;
+}
+
+
+.section, .subsection {
+    margin-bottom: 15px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.section h4, .subsection h5 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    cursor: pointer; /* Wskazuje, że można kliknąć nagłówek, jeśli będzie funkcja rozwijania */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-content, .subsection-content {
+    margin-top: 10px;
+}
+
+/* Styl dla zwiniętej sekcji (jeśli dodamy rozwijanie pojedynczych sekcji) */
+/* .section.collapsed .section-content { display: none; } */
+
+
+.gallery-container {
+    margin-top: 30px;
+}
+
+#trip-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+#trip-gallery a img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    object-fit: cover; /* Ensure images cover the area without distortion */
+}
+
+.map-container {
+    margin-top: 30px;
+}
+
+#trip-map {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.planner-container {
+    margin-top: 40px;
+    border-top: 2px dashed #ccc;
+    padding-top: 20px;
+}
+
+.planner-controls {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.planner-controls button, .planner-controls label.button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    text-decoration: none; /* For label acting as button */
+    display: inline-block; /* For label acting as button */
+    text-align: center;
+}
+
+.planner-controls button:hover, .planner-controls label.button:hover {
+    background-color: #0056b3;
+}
+
+#plan-editor {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Available items | Planner */
+    gap: 20px;
+}
+
+#plan-editor h4 {
+    grid-column: span 2; /* Span across both columns */
+    margin-bottom: 10px;
+}
+
+
+.available-items-list {
+    border: 1px dashed #ccc;
+    padding: 10px;
+    min-height: 150px; /* Ensure drop area is visible */
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+.plan-day-list {
+     grid-column: span 2; /* Span across both columns */
+     display: grid;
+     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Multiple day columns */
+     gap: 15px;
+     margin-top: 15px;
+}
+
+.plan-day {
+    border: 1px solid #b0b0b0;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #e9e9e9;
+}
+
+.plan-day h5 {
+    margin-top: 0;
+    color: #555;
+}
+
+.plan-day-items {
+    min-height: 50px; /* Ensure drop area is visible */
+    border: 1px dashed #a0a0a0;
+    padding: 5px;
+    background-color: #fefefe;
+    border-radius: 3px;
+}
+
+
+.plan-item, .available-item {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 3px;
+    cursor: grab;
+    font-size: 0.9em;
+    position: relative; /* Needed for delete button positioning */
+}
+
+.plan-item .item-time {
+    font-weight: bold;
+    margin-right: 5px;
+    color: #0056b3;
+}
+
+.plan-item .delete-item {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    color: #d9534f;
+    cursor: pointer;
+    font-size: 1em;
+    padding: 0;
+    line-height: 1;
+}
+.plan-item .delete-item:hover {
+    color: #c9302c;
+}
+
+
+.add-custom-item {
+    grid-column: span 2;
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.add-custom-item input,
+.add-custom-item select,
+.add-custom-item button {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.add-custom-item button {
+     background-color: #f0ad4e;
+     color: white;
+     border: none;
+     cursor: pointer;
+}
+.add-custom-item button:hover {
+    background-color: #ec971f;
+}
+
+
+footer {
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 20px;
+    background: #333;
+    color: #fff;
+    font-size: 0.9em;
+}
+
+/* Optional: Styles for SimpleLightbox */
+.sl-overlay { background: rgba(0,0,0,0.8); }
+.sl-caption { color: #fff; }
+.sl-close, .sl-next, .sl-prev { color: #fff; }
