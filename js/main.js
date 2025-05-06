@@ -7,7 +7,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     let areSectionsCollapsed = false;
 
     // Pobierz listę wycieczek z trips/index.json
-    const tripsList = await loadTripsList();
+    let tripsList = [];
+    try {
+        tripsList = await loadTripsList();
+        if (!tripsList || tripsList.length === 0) {
+            tripDetails.innerHTML = '<p>Brak dostępnych wycieczek.</p>';
+            return;
+        }
+    } catch (error) {
+        console.error("Błąd podczas ładowania listy wycieczek:", error);
+        tripDetails.innerHTML = '<p>Błąd podczas ładowania listy wycieczek.</p>';
+        return; // Przerywamy dalsze działanie, jeśli nie udało się załadować listy wycieczek
+    }
 
     // Funkcja do generowania linków nawigacyjnych dla wycieczek
     function generateTripLinks(trips) {
@@ -26,35 +37,39 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Załaduj i wyświetl wycieczkę
     async function loadAndDisplayTrip(tripFolder) {
-        const tripData = await loadTrip(tripFolder);
+        try {
+            const tripData = await loadTrip(tripFolder);
 
-        if (tripData) {
-            // Wyświetl szczegóły wycieczki
-            document.getElementById('trip-title').textContent = tripData.title;
-            document.getElementById('trip-description').textContent = tripData.description;
+            if (tripData) {
+                // Wyświetl szczegóły wycieczki
+                document.getElementById('trip-title').textContent = tripData.title;
+                document.getElementById('trip-description').textContent = tripData.description;
 
-            // Wygeneruj sekcje
-            sectionsContainer.innerHTML = ''; // Wyczyść poprzednie sekcje
-            tripData.sections.forEach(section => {
-                const sectionElement = createSectionElement(tripFolder, section);
-                sectionsContainer.appendChild(sectionElement);
-            });
+                // Wygeneruj sekcje
+                sectionsContainer.innerHTML = ''; // Wyczyść poprzednie sekcje
+                tripData.sections.forEach(section => {
+                    const sectionElement = createSectionElement(tripFolder, section);
+                    sectionsContainer.appendChild(sectionElement);
+                });
 
-            // Inicjalizacja mapy
-            initMap(tripData);
+                // Inicjalizacja mapy
+                initMap(tripData);
+            } else {
+                 tripDetails.innerHTML = '<p>Błąd podczas ładowania danych wycieczki.</p>'; // Informacja o błędzie
+            }
+        } catch (error) {
+            console.error("Błąd podczas ładowania i wyświetlania wycieczki:", error);
+            tripDetails.innerHTML = '<p>Błąd podczas ładowania danych wycieczki.</p>'; // Informacja o błędzie
         }
     }
 
     // Funkcja do tworzenia elementu sekcji
     function createSectionElement(tripFolder, section) {
         const sectionElement = document.createElement('div');
-        sectionElement.className = 'cyber-section section'; // Dodano klasę 'section'
+        sectionElement.className = 'cyber-section section';
 
         const header = document.createElement('div');
         header.className = 'section-header';
-        header.addEventListener('click', () => {
-            content.classList.toggle('collapsed');
-        });
 
         const title = document.createElement('h2');
         title.className = 'section-title neon-text';
@@ -81,6 +96,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         }
 
+        header.addEventListener('click', () => {
+            content.classList.toggle('collapsed');
+        });
+
         header.appendChild(title);
         sectionElement.appendChild(header);
         sectionElement.appendChild(content);
@@ -91,16 +110,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Funkcja do tworzenia elementu podsekcji
     function createSubsectionElement(tripFolder, subsection) {
         const subsectionElement = document.createElement('div');
-        subsectionElement.className = 'subsection section'; // Dodano klasę 'section'
+        subsectionElement.className = 'subsection section';
 
         const header = document.createElement('div');
-        header.className = 'section-header'; // Używamy tej samej klasy co dla sekcji
-        header.addEventListener('click', () => {
-            content.classList.toggle('collapsed');
-        });
+        header.className = 'section-header';
 
-        const title = document.createElement('h3'); // Zmieniono na h3
-        title.className = 'section-title neon-pink'; // Zmieniono kolor
+        const title = document.createElement('h3');
+        title.className = 'section-title neon-pink';
         title.textContent = subsection.title;
 
         const content = document.createElement('div');
@@ -115,6 +131,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             const gallery = createGallery(tripFolder, subsection.id);
             content.appendChild(gallery);
         }
+
+        header.addEventListener('click', () => {
+            content.classList.toggle('collapsed');
+        });
 
         header.appendChild(title);
         subsectionElement.appendChild(header);
