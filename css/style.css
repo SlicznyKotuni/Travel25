@@ -206,3 +206,50 @@ footer {
     padding: 0.3rem 0.5rem;
     font-family: 'Rajdhani', sans-serif;
 }
+.section-content.collapsed {
+    display: none;
+}
+/* ... inne style ... */
+
+/* Sekcje i podsekcje */
+.section {
+    margin-bottom: 2rem;
+}
+
+/* Dodano styl dla nagłówków sekcji i podsekcji */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-left: 3px solid var(--neon-blue);
+    transition: all 0.3s ease;
+}
+
+.section-header:hover {
+    background-color: var(--cyber-darker);
+}
+
+.section-title {
+    margin: 0;
+}
+
+/* Dodano styl dla zawartości sekcji i podsekcji */
+.section-content {
+    padding: 1rem;
+    border-left: 3px solid var(--neon-purple);
+    margin-left: 0.5rem;
+}
+
+/* Dodano styl dla podsekcji */
+.subsection {
+    margin: 1rem 0;
+    padding-left: 1rem;
+    border-left: 2px solid var(--neon-pink);
+}
+
+/* Dodano styl dla zwiniętych sekcji i podsekcji */
+.section-content.collapsed {
+    display: none;
+}
