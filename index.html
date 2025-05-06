@@ -3,124 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kocie Podróże</title>
-    <!-- Podstawowe style + domyślny motyw -->
-    <link rel="stylesheet" href="style.css" id="theme-style">
-    <!-- Biblioteka Leaflet CSS dla mapy -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <!-- Biblioteka SimpleLightbox CSS dla galerii -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.css">
+    <title>Cyber Travel Planner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+    <!-- W index.html zmień kolejność i upewnij się o ścieżce -->
+    <link rel="stylesheet" href="css/cyber-theme.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
     <header>
-        <h1>Kocie Podróże</h1>
-        <nav id="main-nav">
-            <!-- Nawigacja generowana przez JS -->
-            <ul>
-                <!-- <li><a href="#" data-trip="trip1">Wycieczka 1</a></li> -->
-            </ul>
+        <div class="logo glitch-text">Cyber Travel</div>
+        <nav id="trips-nav">
+            <!-- Dynamicznie generowane linki do wycieczek -->
         </nav>
-        <div class="theme-switcher">
-            Wybierz motyw:
-            <select id="theme-select">
-                <option value="style.css">Domyślny</option>
-                <option value="css/cyber-theme.css">Motyw 1</option>
-                <!-- Dodaj więcej opcji dla innych motywów -->
+        <div class="controls">
+            <button id="toggle-sections" class="cyber-button small">Zwiń/Rozwiń sekcje</button>
+            <select id="theme-selector" class="cyber-select">
+                <option value="cyber">Cyber Theme</option>
+                <!-- Inne motywy -->
             </select>
         </div>
     </header>
 
-    <main id="main-content">
-        <!-- Treść wycieczki ładowana przez JS -->
-        <div id="trip-details">
-            <h2 id="trip-title">Wybierz wycieczkę z menu</h2>
+    <main>
+        <div id="trip-details" class="cyber-section">
+            <h1 id="trip-title" class="neon-text"></h1>
             <p id="trip-description"></p>
+        </div>
 
-            <button id="toggle-sections">Zwiń/Rozwiń Wszystkie Sekcje</button>
+        <div id="sections-container">
+            <!-- Sekcje będą generowane dynamicznie -->
+        </div>
 
-            <div id="trip-sections">
-                <!-- Sekcje i podsekcje ładowane przez JS -->
-            </div>
+        <div id="map-container" class="cyber-section">
+            <h2 class="neon-purple">Mapa wycieczki</h2>
+            <div id="map"></div>
+        </div>
 
-            <div class="gallery-container">
-                <h3>Galeria Zdjęć</h3>
-                <div id="trip-gallery" class="simple-gallery">
-                    <!-- Zdjęcia ładowane przez JS -->
+        <div id="planner" class="cyber-section">
+            <h2 class="neon-pink">Planer wycieczki</h2>
+            
+            <div class="planner-controls">
+                <div class="days-selector">
+                    <label>Liczba dni:</label>
+                    <input type="number" id="days-count" min="1" max="14" value="3" class="cyber-input">
+                </div>
+                <div class="planner-buttons">
+                    <button id="export-yaml" class="cyber-button small">Eksportuj YAML</button>
+                    <button id="import-yaml" class="cyber-button small">Importuj YAML</button>
+                    <button id="export-pdf" class="cyber-button small">Eksportuj PDF</button>
                 </div>
             </div>
 
-            <div class="map-container">
-                <h3>Mapa Wycieczki</h3>
-                <div id="trip-map" style="height: 400px;">
-                    <!-- Mapa ładowana przez JS (Leaflet) -->
-                </div>
-            </div>
-
-            <div class="planner-container">
-                <h3>Koci Planer Wycieczki</h3>
-                <div class="planner-controls">
-                    <button id="export-plan">Eksportuj Plan (YAML)</button>
-                    <input type="file" id="import-plan" accept=".yaml" style="display: none;">
-                    <label for="import-plan" class="button">Importuj Plan (YAML)</label>
-                    <button id="export-pdf">Eksportuj Plan (PDF)</button>
-                </div>
-                <div id="plan-editor">
-                    <h4>Ogólny Plan (Dni)</h4>
-                    <div id="overall-plan" class="plan-day-list">
-                        <!-- Dni z sekcjami -->
-                        <div class="plan-day" data-day="1">
-                            <h5>Dzień 1</h5>
-                            <div class="plan-day-items"></div>
-                        </div>
-                        <!-- Można dynamicznie dodawać dni lub mieć predefiniowane -->
-                        <div class="plan-day" data-day="2">
-                            <h5>Dzień 2</h5>
-                            <div class="plan-day-items"></div>
-                        </div>
-                         <div class="plan-day" data-day="3">
-                            <h5>Dzień 3</h5>
-                            <div class="plan-day-items"></div>
-                        </div>
+            <div id="planner-container">
+                <div id="attractions-list" class="planner-section">
+                    <h3 class="neon-blue">Dostępne atrakcje</h3>
+                    <div id="attractions-items" class="draggable-items">
+                        <!-- Dynamicznie generowane elementy -->
                     </div>
+                </div>
 
-                    <h4>Elementy do Planu (Przeciągnij do dni)</h4>
-                    <div id="available-items" class="available-items-list">
-                        <!-- Sekcje/podsekcje dostępne do przeciągnięcia, ładowane przez JS -->
+                <div id="general-plan" class="planner-section">
+                    <h3 class="neon-green">Plan ogólny</h3>
+                    <div id="days-container">
+                        <!-- Dynamicznie generowane dni -->
                     </div>
+                </div>
+            </div>
 
-                    <h4>Szczegółowy Plan (Elementy w Dniach)</h4>
-                     <!-- Tu będą przeciągnięte elementy z możliwością dodania godziny i własnych wpisów -->
-                     <!-- UI dla dodawania własnych wpisów -->
-                     <div class="add-custom-item">
-                         Dodaj własny wpis do dnia:
-                         <select id="custom-item-day"></select>
-                         o godzinie:
-                         <input type="time" id="custom-item-time">
-                         Opis:
-                         <input type="text" id="custom-item-description">
-                         <button id="add-custom-item-btn">Dodaj</button>
-                     </div>
-
+            <div id="detailed-plan" class="planner-section">
+                <h3 class="neon-purple">Plan szczegółowy</h3>
+                <div id="detailed-days-container">
+                    <!-- Dynamicznie generowane szczegóły dni -->
                 </div>
             </div>
         </div>
     </main>
 
     <footer>
-        <p>&copy; 2023 Kocie Podróże</p>
+        <p>© 2025 Cyber Travel Planner</p>
     </footer>
 
-    <!-- Biblioteki JS -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- Skrypty -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-
-    <!-- Główny skrypt aplikacji -->
-    <script src="script.js"></script>
+    <script src="js/tripLoader.js"></script>
+    <script src="js/gallery.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/planner.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
