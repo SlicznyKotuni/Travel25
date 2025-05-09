@@ -1,24 +1,20 @@
-function initMap(tripData) {
-    const mapElement = document.getElementById('map');
-    if (!mapElement) {
-        console.error('Element mapy nie znaleziony!');
-        return;
-    }
+function renderMap(center, zoom, sections) {
+    const mapContainer = document.createElement('div');
+    mapContainer.id = 'map';
+    mapContainer.style.height = '400px';
+    mapContainer.style.width = '100%';
+    document.getElementById('content').appendChild(mapContainer);
 
-    const defaultMapCenter = tripData.defaultMapCenter || [0, 0];
-    const defaultZoom = tripData.defaultZoom || 8;
-
-    const map = L.map('map').setView(defaultMapCenter, defaultZoom);
+    const map = L.map('map').setView(center, zoom);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    // Dodawanie markerów dla sekcji z lokalizacjami
-    tripData.sections.forEach(section => {
+    sections.forEach(section => {
         if (section.location) {
-            L.marker(section.location).addTo(map)
-                .bindPopup(`<b>${section.title}</b><br>${section.description}`);
+            const marker = L.marker(section.location).addTo(map);
+            marker.bindPopup(section.title);
         }
     });
 }

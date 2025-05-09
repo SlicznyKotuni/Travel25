@@ -1,0 +1,36 @@
+body {
+  font-family: 'Courier New', monospace;
+  background-color: #0f0f1a;
+  color: #00ffcc;
+  margin: 0;
+  padding: 0;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.gallery img {
+  height: 150px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border 0.3s ease;
+}
+
+.gallery img:hover,
+.gallery img.active {
+  border-color: #00ffff;
+}
+
+.map {
+  height: 400px;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.nav {
+  background: #1a1a2e;
+  padding: 1rem;
+}

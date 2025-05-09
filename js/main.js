@@ -1,163 +1,88 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    const tripDetails = document.getElementById('trip-details');
-    const sectionsContainer = document.getElementById('sections-container');
-    const tripsNav = document.getElementById('trips-nav');
-    const toggleSectionsButton = document.getElementById('toggle-sections');
+const navigation = document.getElementById('navigation');
+const content = document.getElementById('content');
 
-    let areSectionsCollapsed = false;
+let currentTrip = null;
 
-    // Pobierz listę wycieczek z trips/index.json
-    let tripsList = [];
-    try {
-        tripsList = await loadTripsList();
-        if (!tripsList || tripsList.length === 0) {
-            tripDetails.innerHTML = '<p>Brak dostępnych wycieczek.</p>';
-            return;
-        }
-    } catch (error) {
-        console.error("Błąd podczas ładowania listy wycieczek:", error);
-        tripDetails.innerHTML = '<p>Błąd podczas ładowania listy wycieczek.</p>';
-        return; // Przerywamy dalsze działanie, jeśli nie udało się załadować listy wycieczek
-    }
+function renderNavigation(trips) {
+    const navList = document.createElement('ul');
+    trips.forEach(trip => {
+        const tripItem = document.createElement('li');
+        tripItem.textContent = trip.title;
+        tripItem.addEventListener('click', () => renderTrip(trip));
+        navList.appendChild(tripItem);
+    });
+    navigation.appendChild(navList);
+}
 
-    // Funkcja do generowania linków nawigacyjnych dla wycieczek
-    function generateTripLinks(trips) {
-        trips.forEach(trip => {
-            const link = document.createElement('a');
-            link.href = `#${trip.folder}`;
-            link.textContent = trip.title;
-            link.className = 'cyber-button small';
-            link.addEventListener('click', (event) => {
-                event.preventDefault();
-                loadAndDisplayTrip(trip.folder);
-            });
-            tripsNav.appendChild(link);
-        });
-    }
+function renderTrip(trip) {
+    currentTrip = trip;
+    content.innerHTML = ''; // Clear previous content
+    const tripTitle = document.createElement('h2');
+    tripTitle.textContent = trip.title;
+    content.appendChild(tripTitle);
 
-    // Załaduj i wyświetl wycieczkę
-    async function loadAndDisplayTrip(tripFolder) {
-        try {
-            const tripData = await loadTrip(tripFolder);
+    const tripDescription = document.createElement('p');
+    tripDescription.textContent = trip.description;
+    content.appendChild(tripDescription);
 
-            if (tripData) {
-                // Wyświetl szczegóły wycieczki
-                document.getElementById('trip-title').textContent = tripData.title;
-                document.getElementById('trip-description').textContent = tripData.description;
+    const sectionsContainer = document.createElement('div');
+    sectionsContainer.id = 'sections-container';
+    content.appendChild(sectionsContainer);
 
-                // Wygeneruj sekcje
-                sectionsContainer.innerHTML = ''; // Wyczyść poprzednie sekcje
-                tripData.sections.forEach(section => {
-                    const sectionElement = createSectionElement(tripFolder, section);
-                    sectionsContainer.appendChild(sectionElement);
-                });
+    trip.sections.forEach(section => {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.className = 'section';
+        sectionDiv.id = section.id;
 
-                // Inicjalizacja mapy
-                initMap(tripData);
-            } else {
-                 tripDetails.innerHTML = '<p>Błąd podczas ładowania danych wycieczki.</p>'; // Informacja o błędzie
-            }
-        } catch (error) {
-            console.error("Błąd podczas ładowania i wyświetlania wycieczki:", error);
-            tripDetails.innerHTML = '<p>Błąd podczas ładowania danych wycieczki.</p>'; // Informacja o błędzie
-        }
-    }
+        const sectionTitle = document.createElement('h3');
+        sectionTitle.textContent = section.title;
+        sectionDiv.appendChild(sectionTitle);
 
-    // Funkcja do tworzenia elementu sekcji
-    function createSectionElement(tripFolder, section) {
-        const sectionElement = document.createElement('div');
-        sectionElement.className = 'cyber-section section';
+        const sectionDescription = document.createElement('p');
+        sectionDescription.textContent = section.description;
+        sectionDiv.appendChild(sectionDescription);
 
-        const header = document.createElement('div');
-        header.className = 'section-header';
+        const galleryContainer = document.createElement('div');
+        galleryContainer.className = 'gallery';
+        sectionDiv.appendChild(galleryContainer);
 
-        const title = document.createElement('h2');
-        title.className = 'section-title neon-text';
-        title.textContent = section.title;
-
-        const content = document.createElement('div');
-        content.className = 'section-content';
-
-        const description = document.createElement('p');
-        description.textContent = section.description;
-        content.appendChild(description);
-
-        // Galeria zdjęć
-        if (section.id) {
-            const gallery = createGallery(tripFolder, section.id);
-            content.appendChild(gallery);
+        const images = getImagesForSection(trip.id, section.id);
+        if (images.length > 0) {
+            renderGallery(galleryContainer, images);
         }
 
-        // Dodawanie podsekcji
-        if (section.subsections && section.subsections.length > 0) {
-            section.subsections.forEach(subsection => {
-                const subsectionElement = createSubsectionElement(tripFolder, subsection);
-                content.appendChild(subsectionElement);
-            });
-        }
-
-        header.addEventListener('click', () => {
-            content.classList.toggle('collapsed');
-        });
-
-        header.appendChild(title);
-        sectionElement.appendChild(header);
-        sectionElement.appendChild(content);
-
-        return sectionElement;
-    }
-
-    // Funkcja do tworzenia elementu podsekcji
-    function createSubsectionElement(tripFolder, subsection) {
-        const subsectionElement = document.createElement('div');
-        subsectionElement.className = 'subsection section';
-
-        const header = document.createElement('div');
-        header.className = 'section-header';
-
-        const title = document.createElement('h3');
-        title.className = 'section-title neon-pink';
-        title.textContent = subsection.title;
-
-        const content = document.createElement('div');
-        content.className = 'section-content';
-
-        const description = document.createElement('p');
-        description.textContent = subsection.description;
-        content.appendChild(description);
-
-         // Galeria zdjęć
-         if (subsection.id) {
-            const gallery = createGallery(tripFolder, subsection.id);
-            content.appendChild(gallery);
-        }
-
-        header.addEventListener('click', () => {
-            content.classList.toggle('collapsed');
-        });
-
-        header.appendChild(title);
-        subsectionElement.appendChild(header);
-        subsectionElement.appendChild(content);
-
-        return subsectionElement;
-    }
-
-    // Przycisk Zwiń/Rozwiń wszystkie sekcje
-    toggleSectionsButton.addEventListener('click', () => {
-        areSectionsCollapsed = !areSectionsCollapsed;
-
-        const allSections = document.querySelectorAll('.section-content');
-        allSections.forEach(section => {
-            section.classList.toggle('collapsed', areSectionsCollapsed);
-        });
+        sectionsContainer.appendChild(sectionDiv);
     });
 
-    // Inicjalizacja strony z pierwszą wycieczką z listy
-    if (tripsList.length > 0) {
-        generateTripLinks(tripsList);
-        loadAndDisplayTrip(tripsList[0].folder);
-    } else {
-        tripDetails.innerHTML = '<p>Brak dostępnych wycieczek.</p>';
-    }
-});
+    renderMap(trip.defaultMapCenter, trip.defaultZoom, trip.sections);
+}
+
+function getImagesForSection(tripId, sectionId) {
+    const imagesDir = `trips/${tripId}/${sectionId}`;
+    const images = [];
+    fetch(imagesDir)
+        .then(response => response.text())
+        .then(text => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(text, "text/html");
+            const links = doc.querySelectorAll('a');
+            for (const link of links) {
+                const file = link.href.split('/').pop();
+                if (file.endsWith('.jpg')) {
+                    images.push(`${imagesDir}/${file}`);
+                }
+            }
+        })
+        .catch(error => console.error('Error:', error));
+
+    return images;
+}
+
+function renderGallery(container, images) {
+    images.forEach(imagePath => {
+        const img = document.createElement('img');
+        img.src = imagePath;
+        img.className = 'gallery-image';
+        container.appendChild(img);
+    });
+}
